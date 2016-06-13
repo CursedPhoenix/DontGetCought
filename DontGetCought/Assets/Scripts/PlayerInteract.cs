@@ -39,7 +39,7 @@ public class PlayerInteract : MonoBehaviour
     void OnTriggerExit(Collider col)
     {
         activeObjects.Remove(col);
-        print(activeObjects.Count);
+        //print(activeObjects.Count);
         switch (col.tag)
         {
             case "Door":
@@ -65,7 +65,6 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (doorArea == true && treasureFound == false)
             {
-                Debug.Log("Door triggered");
                 ToggleDoor();
             }
             else if (doorArea == false)

@@ -4,7 +4,8 @@ using System.Collections;
 public class ClearSight : MonoBehaviour {
 	
 	public float DistanceToPlayer = 10.87f;
-	void Update() {
+
+    void Update() {
 		
 		RaycastHit[] hits;
 		// you can also use CapsuleCastAll()
@@ -17,8 +18,8 @@ public class ClearSight : MonoBehaviour {
 		foreach(RaycastHit hit in hits) {
 
 			Renderer R = hit.collider.GetComponent<Renderer>();
-			if (R == null)
-				continue; // no renderer attached? go to next hit
+			if (R == null || hit.collider.tag == "Treasure")
+				continue; // no renderer attached or tag tells it's a Treasure? go to next hit
 				// TODO: maybe implement here a check for GOs that should not be affected like the player
 
 

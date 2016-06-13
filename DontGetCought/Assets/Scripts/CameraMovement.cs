@@ -3,31 +3,34 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
 
-	GameObject CameraAnchor;
-	private float CameraAnchorX;
-	private float CameraAnchorZ;
+	public GameObject Player;
+	private float PlayerX;
+	private float PlayerZ;
     private bool rotateCam = false;
     private Quaternion currentRotation;
     private Quaternion newRotation;
-    private static int rotateValue = 0;
+    private static int rotateValue;
+    public int rotateSteps = 90;
     public float rotateSpeed = 6f;
-    public float CameraDistance = -3;
-	public float CameraHeight = 5;
 
 	// Use this for initialization
 	void Start () {
-		CameraAnchor = GameObject.FindGameObjectWithTag("CameraAnchor");
+        // Aktuelles Richtung in currentRotation schreiben und auf newRotation kopieren, um CalcNewRot() einfach verwenden zu können
+        currentRotation = transform.rotation;
+        newRotation = currentRotation;
         MoveCamera ();
 	}
 
     void Update () {
         if (Input.GetKeyDown(KeyCode.Q)) {
-            rotateValue = 90;
+            rotateValue = -rotateSteps;
+            CalcNewRot();
             rotateCam = true;
             print("Q pressed");
         }
         else if (Input.GetKeyDown(KeyCode.E)) {
-            rotateValue = -90;
+            rotateValue = rotateSteps;
+            CalcNewRot();
             rotateCam = true;
             print("E pressed");
         }
@@ -36,33 +39,32 @@ public class CameraMovement : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		MoveCamera ();
-        if (rotateCam == true) {
-            print("RotateCamera triggert");
+        if (rotateCam) {
             RotateCamera();
         }
 	}
 
 	void MoveCamera () {
-        CameraAnchorX = CameraAnchor.transform.position.x;
-        CameraAnchorZ = CameraAnchor.transform.position.z;
-		transform.position = new Vector3 (CameraAnchorX, CameraHeight, CameraAnchorZ + CameraDistance);
+        PlayerX = Player.transform.position.x;
+        PlayerZ = Player.transform.position.z;
+		transform.position = new Vector3 (PlayerX, 0, PlayerZ);
 	}
 
     void RotateCamera() {
-        print("RotateCamera startet");
-        currentRotation = CameraAnchor.transform.rotation;
 
-        if (rotateValue != 0) {
-            newRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotateValue, currentRotation.z);
-            rotateValue = 0;
-        }
+        currentRotation = transform.rotation;
         
         if (currentRotation != newRotation)
         {
-            CameraAnchor.transform.rotation = Quaternion.Slerp(currentRotation, newRotation, rotateSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(currentRotation, newRotation, rotateSpeed * Time.deltaTime);
         }
         else {
             rotateCam = false;
         }
+    }
+
+    void CalcNewRot() {
+        newRotation = newRotation * Quaternion.Euler(0, rotateValue, 0);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().RotateWithCam(rotateValue);
     }
 }

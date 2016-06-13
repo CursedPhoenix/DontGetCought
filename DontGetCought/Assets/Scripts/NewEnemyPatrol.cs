@@ -6,9 +6,11 @@ public class NewEnemyPatrol : MonoBehaviour
 {
 
     private NavMeshAgent agent;
-
+    public int startPosX = 0;
+    public int startPosZ = 0;
     public GameObject[] waypoints;
     public int waypointInd;
+    private bool seePlayer = false;
 
 
     void Start()
@@ -18,6 +20,8 @@ public class NewEnemyPatrol : MonoBehaviour
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
         waypointInd = Random.Range(0, waypoints.Length);
 
+        this.transform.position = new Vector3(startPosX, 0, startPosZ);
+
         // Disabling auto-braking allows for continuous movement
         // between points (ie, the agent doesn't slow down as it
         // approaches a destination point).
@@ -26,6 +30,13 @@ public class NewEnemyPatrol : MonoBehaviour
         GotoNextPoint();
     }
 
+    void Update()
+    {
+        // Choose the next destination point when the agent gets
+        // close to the current one.
+        if (agent.remainingDistance < 0.5f && seePlayer == false)
+            GotoNextPoint();
+    }
 
     void GotoNextPoint()
     {
@@ -45,18 +56,23 @@ public class NewEnemyPatrol : MonoBehaviour
         do
         {
             waypointInd = Random.Range(0, waypoints.Length);
-            if (waypointInd == lastWaypointInd) print("gleiche Zahl");
         }
         while (waypointInd == lastWaypointInd);
 
     }
 
+    public void ChasePlayer (Collider player) {
 
-    void Update()
-    {
-        // Choose the next destination point when the agent gets
-        // close to the current one.
-        if (agent.remainingDistance < 0.5f)
-            GotoNextPoint();
+        RaycastHit[] hits;
+        
+        hits = Physics.RaycastAll(transform.position, (player.transform.position - transform.position), Vector3.Distance(transform.position, player.transform.position));
+        Debug.DrawLine(transform.position, player.transform.position, Color.green, 10.5f, true);
+        Debug.Log("just drawed the line!");
+        if (hits[0].rigidbody.tag != "Player") {
+            
+        }
+        else {
+            agent.destination = player.transform.position;
+        }
     }
 }
