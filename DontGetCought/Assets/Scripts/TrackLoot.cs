@@ -38,6 +38,7 @@ public class TrackLoot : MonoBehaviour {
             notifications.CrossFadeAlpha(1.0f, 0.01f, false);
             notifications.text = "Yeah! Good boy! You got me what I wanted!";
             notifications.CrossFadeAlpha(0.0f, 5.5f, false);
+            GameObject.FindGameObjectWithTag("MenuManager").GetComponent<MenuManager>().LoadScene("WinScreen");
             return true;
         }
         else {

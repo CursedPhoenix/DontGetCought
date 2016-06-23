@@ -7,8 +7,20 @@ public class FarDistColl_S : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            print("Calling ChasePlayer()");
-            this.transform.parent.GetComponent<NewEnemyPatrol>().ChasePlayer(col);
+            if (this.transform.parent.GetComponent<NewEnemyPatrol>().RaycastHit() && this.transform.parent.GetComponent<NewEnemyPatrol>().InFOV()) {
+                print("Calling ChasePlayer()");
+                this.transform.parent.GetComponent<NewEnemyPatrol>().ChasePlayer();
+            }
         }
     }
+
+    /*void OnTriggerStay(Collider col) {
+        if (this.transform.parent.GetComponent<NewEnemyPatrol>().RaycastHit()){
+            this.transform.parent.GetComponent<NewEnemyPatrol>().ChasePlayer();
+        }
+        else {
+            this.transform.parent.GetComponent<NewEnemyPatrol>().SearchPlayer();
+        }
+    }*/
+
 }
