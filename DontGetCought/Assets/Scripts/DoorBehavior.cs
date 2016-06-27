@@ -9,6 +9,35 @@ public class DoorBehavior : MonoBehaviour {
 	public float smooth = 2f;
 
 	void OnTriggerEnter(Collider col) {
+
+        //Sollte die Türen in beide Richtungen öffnen...
+        /*
+        //Türen als Workaround in beide Richtungen öffnen, da sonst der Mesh Agent immer dagegen semmelt
+        //Collider ist rechts
+        Debug.Log(".InverseTransformPoint(col.transform.position).x: " + this.transform.InverseTransformPoint(col.transform.position).x);
+        if (open == false && this.transform.InverseTransformPoint(col.transform.position).x > 0) {
+            Debug.Log("Passed the First if");
+            Debug.Log("doorOpenAngle: " + doorOpenAngle);
+            if (doorOpenAngle < 0) {
+                Debug.Log("Passed the Second if");
+                doorOpenAngle = -doorOpenAngle;
+                Debug.Log("doorOpenAngle: " + doorOpenAngle);
+            }
+        //Collider ist links
+        } else if (open == false && this.transform.InverseTransformPoint(col.transform.position).x < 0) {
+            Debug.Log("Passed the First if");
+            Debug.Log("doorOpenAngle: " + doorOpenAngle);
+            if (doorOpenAngle > 0)
+            {
+                Debug.Log("Passed the Second if");
+                doorOpenAngle = -doorOpenAngle;
+                Debug.Log("doorOpenAngle: " + doorOpenAngle);
+            }
+        } else {
+            Debug.Log("You damned Idiot missed something!");
+        }
+        */
+
         switch (col.tag)
         {
             case "Enemy":
@@ -32,6 +61,7 @@ public class DoorBehavior : MonoBehaviour {
 
 	void FixedUpdate() {
         ToggleDoor();
+        Debug.DrawRay(this.transform.position + new Vector3(0,1,0), this.transform.forward, Color.yellow);
     }
 
     public void ChangeDoorState() {

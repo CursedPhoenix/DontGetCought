@@ -26,13 +26,11 @@ public class CameraMovement : MonoBehaviour {
             rotateValue = -rotateSteps;
             CalcNewRot();
             rotateCam = true;
-            print("Q pressed");
         }
         else if (Input.GetKeyDown(KeyCode.E)) {
             rotateValue = rotateSteps;
             CalcNewRot();
             rotateCam = true;
-            print("E pressed");
         }
     }
 	

@@ -14,7 +14,7 @@ public class ClearSight : MonoBehaviour {
 		// Get the Players Pos to cast a Ray to him
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 
-		hits = Physics.RaycastAll(transform.position, (player.transform.position - transform.position).normalized, DistanceToPlayer);
+		hits = Physics.RaycastAll(transform.position, (player.transform.position - transform.position + new Vector3(0,1,0)).normalized, DistanceToPlayer);
 		foreach(RaycastHit hit in hits) {
 
 			Renderer R = hit.collider.GetComponent<Renderer>();
